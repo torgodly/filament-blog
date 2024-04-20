@@ -3,7 +3,7 @@ return [
     'navigation.group' => 'مدونة',
     'navigation.label' => 'الفئة',
     'navigation.plural-label' => 'الفئات',
-    'navigation.model-label' => 'الفئة',
+    'navigation.model-label' => 'فئة',
 
     'form' => [
         'name' => 'الاسم',

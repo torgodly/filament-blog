@@ -32,6 +32,7 @@ class Tag extends Model
     {
         return [
             TextInput::make('name')
+                ->label(__('filament-blog::tag.form.name'))
                 ->live(true)->afterStateUpdated(fn (Set $set, ?string $state) => $set(
                     'slug',
                     Str::slug($state)
@@ -41,6 +42,7 @@ class Tag extends Model
                 ->maxLength(155),
 
             TextInput::make('slug')
+                ->label(__('filament-blog::tag.form.slug'))
                 ->unique('tags', 'slug', null, 'id')
                 ->readOnly()
                 ->maxLength(255),
