@@ -22,6 +22,24 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament-blog::category.navigation.group');
+    }
+    public static function getLabel(): string
+    {
+        return __('filament-blog::category.navigation.label');
+    }
+    public static function getPluralLabel(): string
+    {
+        return __('filament-blog::category.navigation.plural-label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-blog::category.navigation.model-label');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -33,16 +51,20 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('filament-blog::category.table.name'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\TextColumn::make('slug')->label(__('filament-blog::category.table.slug')),
                 Tables\Columns\TextColumn::make('posts_count')
+                    ->label(__('filament-blog::category.table.posts_count'))
                     ->badge()
                     ->counts('posts'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('filament-blog::category.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('filament-blog::category.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -65,10 +87,10 @@ class CategoryResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Category')
+            Section::make(__('filament-blog::category.infolist.label'))
                 ->schema([
-                    TextEntry::make('name'),
-                    TextEntry::make('slug'),
+                    TextEntry::make('name')->label(__('filament-blog::category.infolist.name')),
+                    TextEntry::make('slug')->label(__('filament-blog::category.infolist.slug')),
                 ])->columns(2)
                 ->icon('heroicon-o-square-3-stack-3d'),
         ]);
