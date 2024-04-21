@@ -138,11 +138,12 @@ class Post extends Model
     public static function getForm()
     {
         return [
-            Section::make('Blog Details')
+            Section::make(__('filament-blog::post.form.sections.blog-details.label'))
                 ->schema([
-                    Fieldset::make('Titles')
+                    Fieldset::make(__('filament-blog::post.form.sections.blog-details.field-sets.titles.label'))
                         ->schema([
                             Select::make('category_id')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.titles.fields.categories'))
                                 ->multiple()
                                 ->preload()
                                 ->createOptionForm(Category::getForm())
@@ -151,6 +152,7 @@ class Post extends Model
                                 ->columnSpanFull(),
 
                             TextInput::make('title')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.titles.fields.title'))
                                 ->live(true)
                                 ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
                                     'slug',
@@ -161,13 +163,16 @@ class Post extends Model
                                 ->maxLength(255),
 
                             TextInput::make('slug')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.titles.fields.slug'))
                                 ->maxLength(255),
 
                             Textarea::make('sub_title')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.titles.fields.sub-title'))
                                 ->maxLength(255)
                                 ->columnSpanFull(),
 
                             Select::make('tag_id')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.titles.fields.tags'))
                                 ->multiple()
                                 ->preload()
                                 ->createOptionForm(Tag::getForm())
@@ -176,30 +181,32 @@ class Post extends Model
                                 ->columnSpanFull(),
                         ]),
                     TiptapEditor::make('body')
+                        ->label(__('filament-blog::post.form.fields.body'))
                         ->profile('default')
                         ->disableFloatingMenus()
                         ->extraInputAttributes(['style' => 'max-height: 30rem; min-height: 24rem'])
                         ->required()
                         ->columnSpanFull(),
-                    Fieldset::make('Feature Image')
+                    Fieldset::make(__('filament-blog::post.form.sections.blog-details.field-sets.feature-image.label'))
                         ->schema([
                             FileUpload::make('cover_photo_path')
-                                ->label('Cover Photo')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.feature-image.fields.cover-photo.label'))
                                 ->directory('/blog-feature-images')
-                                ->hint('This cover image is used in your blog post as a feature image. Recommended image size 1200 X 628')
+                                ->hint(__('filament-blog::post.form.sections.blog-details.field-sets.feature-image.fields.cover-photo.hint'))
                                 ->image()
                                 ->preserveFilenames()
                                 ->imageEditor()
                                 ->maxSize(1024 * 5)
                                 ->rules('dimensions:max_width=1920,max_height=1004')
                                 ->required(),
-                            TextInput::make('photo_alt_text')->required(),
+                            TextInput::make('photo_alt_text')->required()->label(__('filament-blog::post.form.sections.blog-details.field-sets.feature-image.fields.photo-alt-text')),
                         ])->columns(1),
 
-                    Fieldset::make('Status')
+                    Fieldset::make(__('filament-blog::post.form.sections.blog-details.field-sets.status.label'))
                         ->schema([
 
                             ToggleButtons::make('status')
+                                ->label(__('filament-blog::post.form.sections.blog-details.field-sets.status.fields.status'))
                                 ->live()
                                 ->inline()
                                 ->options(PostStatus::class)
@@ -215,6 +222,7 @@ class Post extends Model
                                 ->native(false),
                         ]),
                     Select::make(config('filamentblog.user.foreign_key'))
+                        ->label(__('filament-blog::post.form.fields.user'))
                         ->relationship('user', 'name')
                         ->default(auth()->id()),
 

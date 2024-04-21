@@ -18,6 +18,11 @@ class EditPost extends EditRecord
         ];
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament-blog::post.sub-navigation.edit-post.label');
+    }
+
     protected function beforeSave()
     {
         if ($this->data['status'] === PostStatus::PUBLISHED->value) {

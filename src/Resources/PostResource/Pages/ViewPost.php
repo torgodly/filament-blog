@@ -20,11 +20,16 @@ class ViewPost extends ViewRecord
         return $record->title;
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament-blog::post.sub-navigation.view-post.label');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Action::make('sendNotification')
-                ->label('Send Notification')
+                ->label(__('filament-blog::post.sub-navigation.view-post.header-actions.send-notification'))
                 ->requiresConfirmation()
                 ->icon('heroicon-o-bell')->action(function (Post $record) {
                     event(new BlogPublished($record));
@@ -33,7 +38,7 @@ class ViewPost extends ViewRecord
                     return $record->isNotPublished();
                 }),
             Action::make('preview')
-                ->label('Preview')
+                ->label(__('filament-blog::post.sub-navigation.view-post.header-actions.preview'))
                 ->requiresConfirmation()
                 ->icon('heroicon-o-eye')->url(function (Post $record) {
                     return route('filamentblog.post.show', $record->slug);

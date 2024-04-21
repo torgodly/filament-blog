@@ -36,6 +36,26 @@ class PostResource extends Resource
 
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament-blog::post.navigation.group');
+    }
+
+    public static function getLabel(): string
+    {
+        return __('filament-blog::post.navigation.label');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('filament-blog::post.navigation.plural-label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-blog::post.navigation.model-label');
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return Post::count();
@@ -53,31 +73,36 @@ class PostResource extends Resource
             ->deferLoading()
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('filament-blog::post.table.title'))
                     ->description(function (Post $record) {
                         return Str::limit($record->sub_title, 40);
                     })
                     ->searchable()->limit(20),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('filament-blog::post.table.status'))
                     ->badge()
                     ->color(function ($state) {
                         return $state->getColor();
                     }),
-                Tables\Columns\ImageColumn::make('cover_photo_path')->label('Cover Photo'),
+                Tables\Columns\ImageColumn::make('cover_photo_path')->label(__('filament-blog::post.table.cover-photo')),
 
                 UserPhotoName::make('user')
-                    ->label('Author'),
+                    ->label(__('filament-blog::post.table.author')),
 
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('filament-blog::post.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('filament-blog::post.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort('id', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('user')
+                    ->label(__('filament-blog::post.filter.author'))
                     ->relationship('user', config('filamentblog.user.columns.name'))
                     ->searchable()
                     ->preload()
@@ -99,31 +124,36 @@ class PostResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            Section::make('Post')
+            Section::make(__('filament-blog::post.infolist.sections.post.label'))
                 ->schema([
-                    Fieldset::make('General')
+                    Fieldset::make(__('filament-blog::post.infolist.sections.post.field-sets.general.label'))
                         ->schema([
-                            TextEntry::make('title'),
-                            TextEntry::make('slug'),
-                            TextEntry::make('sub_title'),
+                            TextEntry::make('title')->label(__('filament-blog::post.infolist.sections.post.field-sets.general.fields.title')),
+                            TextEntry::make('slug')->label(__('filament-blog::post.infolist.sections.post.field-sets.general.fields.slug')),
+                            TextEntry::make('sub_title')->label(__('filament-blog::post.infolist.sections.post.field-sets.general.fields.sub-title')),
                         ]),
-                    Fieldset::make('Publish Information')
+                    Fieldset::make(__('filament-blog::post.infolist.sections.post.field-sets.publish-information.label'))
                         ->schema([
-                            TextEntry::make('status')
+                            TextEntry::make('status')->label(__('filament-blog::post.infolist.sections.post.field-sets.publish-information.fields.status'))
                                 ->badge()->color(function ($state) {
                                     return $state->getColor();
                                 }),
-                            TextEntry::make('published_at')->visible(function (Post $record) {
-                                return $record->status === PostStatus::PUBLISHED;
-                            }),
+                            TextEntry::make('published_at')
+                                ->label(__('filament-blog::post.infolist.sections.post.field-sets.publish-information.fields.published-at'))
+                                ->visible(function (Post $record) {
+                                    return $record->status === PostStatus::PUBLISHED;
+                                }),
 
-                            TextEntry::make('scheduled_for')->visible(function (Post $record) {
-                                return $record->status === PostStatus::SCHEDULED;
-                            }),
+                            TextEntry::make('scheduled_for')
+                                ->label(__('filament-blog::post.infolist.sections.post.field-sets.publish-information.fields.scheduled-for'))
+                                ->visible(function (Post $record) {
+                                    return $record->status === PostStatus::SCHEDULED;
+                                }),
                         ]),
-                    Fieldset::make('Description')
+                    Fieldset::make(__('filament-blog::post.infolist.sections.post.field-sets.description.label'))
                         ->schema([
                             TextEntry::make('body')
+                                ->label(__('filament-blog::post.infolist.sections.post.field-sets.description.fields.body'))
                                 ->html()
                                 ->columnSpanFull(),
                         ]),
